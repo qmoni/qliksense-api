@@ -1,6 +1,6 @@
 {
   "name": "qliksense-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Node.js Package To Communicate With Qlik Sense API.",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,8 @@
     "qliksense",
     "qliksense api",
     "sense devops",
-    "connecting to qliksense"
+    "connecting to qliksense",
+    "qlik sense qsr"
   ],
   "author": "QMoni",
   "license": "MIT",

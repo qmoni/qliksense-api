@@ -31,7 +31,7 @@ QlikConnection.prototype.getEngine = async function () {
     return res
 }
 
-QlikConnection.prototype.getHealthcCheck = async function () {
+QlikConnection.prototype.getHealthCheck = async function () {
     let reqOptions = requestOptions.getOptions('healthcheck', this.options)
     let res = await requestDispatcher(reqOptions)
     return res
@@ -46,7 +46,6 @@ QlikConnection.prototype.getExecutionResult = async function () {
 QlikConnection.prototype.getQsr = async function (path) {
     let reqOptions = requestOptions.getOptions('qrs', this.options)
     reqOptions.path = reqOptions.path.replace('##path##', path)
-    console.log(reqOptions)
     let res = await requestDispatcher(reqOptions)
     return res
 }

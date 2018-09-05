@@ -18,23 +18,7 @@ module.exports = function createClient (optionsParams) {
         throw new TypeError(e);
     }
 
-   
-    // testConnection(options)
-
     return options;
 };
 
-async function testConnection(options) {
-    options.path = '/qrs/about?xrfkey=abcdefghijklmnop'
-    options.method = 'GET'
-    options.headers = {
-        'x-qlik-xrfkey' : 'abcdefghijklmnop',
-        'X-Qlik-User' : 'UserDirectory= Internal; UserId= sa_repository '
-     }
 
-      https.get(options, function(res) {
-        }).on('error', function(e) {
-            throw new TypeError(e.message);
-        });
-
-}
