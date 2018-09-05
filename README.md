@@ -1,1 +1,1 @@
-# qliksense-api
+# Best Wrapper For Qlik Sense API

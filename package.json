@@ -1,0 +1,29 @@
+{
+  "name": "qliksense-api",
+  "version": "1.0.0",
+  "description": "Node.js Package To Communicate With Qlik Sense API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qmoni/qliksense-api.git"
+  },
+  "keywords": [
+    "qliksense",
+    "qliksense api",
+    "sense devops",
+    "connecting to qliksense"
+  ],
+  "author": "QMoni",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/qmoni/qliksense-api/issues"
+  },
+  "homepage": "https://github.com/qmoni/qliksense-api#readme",
+  "dependencies": {
+    "request": "^2.88.0",
+    "ws": "^6.0.0"
+  }
+}
