@@ -4,8 +4,8 @@ const unifyOptions = require('./libs/createClient');
 const requestOptions = require('./libs/requestOptions');
 const socket = require('./libs/socketConnection');
 const https = require('https');
-const request = require('request')
 const path = require('path');
+const helpers = require('./libs/helpers')
 
 function QlikConnection (options) {
  this.options = options
@@ -15,38 +15,38 @@ function QlikConnection (options) {
 
 QlikConnection.prototype.getAbout = async function () {
         let reqOptions = requestOptions.getOptions('about', this.options)
-        let res = await requestDispatcher(reqOptions)
+        let res = await requestGetDispatcher(reqOptions)
         return res
     }
 
 QlikConnection.prototype.getApps = async function () {
     let reqOptions = requestOptions.getOptions('apps', this.options)
-    let res = await requestDispatcher(reqOptions)
+    let res = await requestGetDispatcher(reqOptions)
     return res
 }
 
 QlikConnection.prototype.getEngine = async function () {
     let reqOptions = requestOptions.getOptions('engine', this.options)
-    let res = await requestDispatcher(reqOptions)
+    let res = await requestGetDispatcher(reqOptions)
     return res
 }
 
 QlikConnection.prototype.getHealthCheck = async function () {
     let reqOptions = requestOptions.getOptions('healthcheck', this.options)
-    let res = await requestDispatcher(reqOptions)
+    let res = await requestGetDispatcher(reqOptions)
     return res
 }
 
 QlikConnection.prototype.getExecutionResult = async function () {
     let reqOptions = requestOptions.getOptions('executionresult', this.options)
-    let res = await requestDispatcher(reqOptions)
+    let res = await requestGetDispatcher(reqOptions)
     return res
 }
 
 QlikConnection.prototype.getQsr = async function (path) {
     let reqOptions = requestOptions.getOptions('qrs', this.options)
     reqOptions.path = reqOptions.path.replace('##path##', path)
-    let res = await requestDispatcher(reqOptions)
+    let res = await requestGetDispatcher(reqOptions)
     return res
 }
 
@@ -75,8 +75,15 @@ QlikConnection.prototype.getGlobal = async function (method, params) {
     })
 }
 
+QlikConnection.prototype.generateSession = async function (userdirectory, userName) {
+    let reqOptions = requestOptions.getOptions('createSession', this.options)
+    let bodyOptions = { 'UserDirectory': userdirectory.toString() , 'UserId': userName.toString(), "SessionId": helpers.generateUUID() }
+    let res = await requestPostDispatcher(reqOptions, bodyOptions)
+    return res
+}
 
-async function requestDispatcher(reqOptions){
+
+async function requestGetDispatcher(reqOptions){
     return new Promise(async function(resolve, reject){
         https.get(reqOptions, function(res) {
             let body = '';
@@ -91,6 +98,31 @@ async function requestDispatcher(reqOptions){
           });
      })
 }    
+
+async function requestPostDispatcher(reqOptions, bodyOptions){
+    reqOptions.headers = {...reqOptions.headers, 'Content-Type': 'application/json'}
+    return new Promise((resolve, reject) => {
+      let sessionreq = https.request(reqOptions, async function (sessionres) {
+        let body = '';
+        sessionres.on("data", function(chunk) {
+            body += chunk;
+        });
+        sessionres.on('end', function () {
+            resolve(JSON.parse(body.toString()))
+          });
+        }).on('error', function(e) {
+           reject(e)
+      });
+      let jsonrequest = JSON.stringify(bodyOptions);
+      sessionreq.write(jsonrequest);
+      sessionreq.end();
+  
+      sessionreq.on('error', function (e) {
+        reject('Error' + e);
+      });
+    })
+  
+}  
 
 exports.createClient = function () {
     return new QlikConnection(unifyOptions.apply(null,arguments));

@@ -17,7 +17,7 @@ This package is designed to be the simplest way possible to connect to Qlik.
 ### Installing
 ```
 
-npm i qliksense-api
+npm i qliksense-api --save
 
 ```
 
@@ -48,7 +48,7 @@ qlik.getAbout().then((res)=>{
 or Async/Await :
 
 ```
-let res = qlik.getAbout()
+let res = await qlik.getAbout()
 console.log(res)
 ```
 
@@ -73,7 +73,28 @@ or Async/Await :
 
 ```
 const path = 'repositoryservice/full'
-let res = qlik.getQsr(path)
+let res = await qlik.getQsr(path)
+console.log(res)
+```
+
+## QPS
+
+### Generating Session for User
+The session solution allows the Qlik Sense Proxy Service (QPS) to use a session from an external system to validate who the user is.
+
+```
+let username =  'userExemple'
+let userRepository = 'repositoryExemple'
+qlik.generateSession(userRepository, username).then((res)=>{
+    console.log(res)
+})
+```
+or Async/Await :
+
+```
+let username =  'userExemple'
+let userRepository = 'repositoryExemple'
+let res = await qlik.generateSession(userRepository, username)
 console.log(res)
 ```
 
