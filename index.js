@@ -82,6 +82,20 @@ QlikConnection.prototype.generateSession = async function (userdirectory, userNa
     return res
 }
 
+QlikConnection.prototype.getSession = async function (sessionId) {
+    let reqOptions = requestOptions.getOptions('getSession', this.options)
+    reqOptions.path = reqOptions.path.replace('##path##', sessionId)
+    let res = await requestGetDispatcher(reqOptions)
+    return res
+}
+
+QlikConnection.prototype.deleteSession = async function (sessionId) {
+    let reqOptions = requestOptions.getOptions('deleteSession', this.options)
+    reqOptions.path = reqOptions.path.replace('##path##', sessionId)
+    let res = await requestGetDispatcher(reqOptions)
+    return res
+}
+
 
 async function requestGetDispatcher(reqOptions){
     return new Promise(async function(resolve, reject){

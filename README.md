@@ -79,7 +79,7 @@ console.log(res)
 
 ## QPS
 
-### Generating Session for User
+### Generating Session
 The session solution allows the Qlik Sense Proxy Service (QPS) to use a session from an external system to validate who the user is.
 
 ```
@@ -95,6 +95,38 @@ or Async/Await :
 let username =  'userExemple'
 let userRepository = 'repositoryExemple'
 let res = await qlik.generateSession(userRepository, username)
+console.log(res)
+```
+
+### Get Session
+
+```
+let sessionId =  'ed0671860b754b92df7c2e9c6cea4a7f'
+qlik.getSession(sessionId).then((res)=>{
+    console.log(res)
+})
+```
+or Async/Await :
+
+```
+let sessionId =  'ed0671860b754b92df7c2e9c6cea4a7f'
+let res = await qlik.getSession(sessionId)
+console.log(res)
+```
+
+### Delete Session
+
+```
+let sessionId =  'ed0671860b754b92df7c2e9c6cea4a7f'
+qlik.deleteSession(sessionId).then((res)=>{
+    console.log(res)
+})
+```
+or Async/Await :
+
+```
+let sessionId =  'ed0671860b754b92df7c2e9c6cea4a7f'
+let res = await qlik.deleteSession(sessionId)
 console.log(res)
 ```
 

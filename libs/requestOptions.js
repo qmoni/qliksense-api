@@ -35,6 +35,16 @@ const pathDef = {
         method: 'POST',
         port: 4243,
         path: `/qps/session?xrfkey=${xrfkey}`
+    },
+    getSession: {
+        method: 'GET',
+        port: 4243,
+        path: `/qps/session/##path##?xrfkey=${xrfkey}`
+    },
+    deleteSession: {
+        method: 'DELETE',
+        port: 4243,
+        path: `/qps/session/##path##?xrfkey=${xrfkey}`
     }
 }
 
