@@ -70,7 +70,7 @@ QlikConnection.prototype.engine = async function (method, params) {
     })
 }
 
-QlikConnection.prototype.OpenDoc = async function (docId, method, params) {
+QlikConnection.prototype.openDoc = async function (docId, method, params) {
     if (!params) params = []
     if (!method || !docId) throw new Error('No method or docId declared')
     let ws = await socket.creatSocket(this.options)

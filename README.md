@@ -162,7 +162,7 @@ All the methods available can be found [here](https://help.qlik.com/en-US/sense-
 let appId = '9586b50f-4df2-400e-8b4a-69874a7dcc3e'
 let method = 'GetAllInfos'
 let params = []
-qlik.OpenDoc(appId, method, params).then((res)=>{
+qlik.openDoc(appId, method, params).then((res)=>{
   console.log(res)
 })
 ```
@@ -173,7 +173,7 @@ or Async/Await:
 let appId = '9586b50f-4df2-400e-8b4a-69874a7dcc3e'
 let method = 'GetAllInfos'
 let params = []
-let res = await qlik.OpenDoc(appId, method, params)
+let res = await qlik.openDoc(appId, method, params)
 console.log(res)
 ```
 
