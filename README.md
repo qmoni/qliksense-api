@@ -130,8 +130,52 @@ let res = await qlik.deleteSession(sessionId)
 console.log(res)
 ```
 
+## Qlik Engine API
+The Qlik Engine API consists of a set of objects representing apps, lists, and so on.
 
+[Qlik Engine API - DOC](https://help.qlik.com/en-US/sense-developer/June2018/Subsystems/EngineAPI/Content/introducing-engine-API.htm)
 
+## Global Class
+All the methods available can be found [here](https://help.qlik.com/en-US/sense-developer/June2018/apis/EngineAPI/services-Global-AbortAll.html)
+
+```
+let method = 'GetDocList'
+let params = []
+qlik.engine(method, params).then((res)=>{
+  console.log(res)
+})
+```
+
+or Async/Await:
+
+```
+let method = 'GetDocList'
+let params = []
+let res = await qlik.engine(method)
+console.log(res)
+```
+
+## App Class
+All the methods available can be found [here](https://help.qlik.com/en-US/sense-developer/November2017/Subsystems/EngineAPI/Content/Classes/AppClass/App-class-AbortModal-method.htm)
+
+```
+let appId = '9586b50f-4df2-400e-8b4a-69874a7dcc3e'
+let method = 'GetAllInfos'
+let params = []
+qlik.OpenDoc(appId, method, params).then((res)=>{
+  console.log(res)
+})
+```
+
+or Async/Await:
+
+```
+let appId = '9586b50f-4df2-400e-8b4a-69874a7dcc3e'
+let method = 'GetAllInfos'
+let params = []
+let res = await qlik.OpenDoc(appId, method, params)
+console.log(res)
+```
 
 
 ## Authors

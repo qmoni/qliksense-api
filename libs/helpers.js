@@ -8,8 +8,19 @@ function generateUUID() {
     });
     return uuid;
   }
+
+  function buildMessage(method, handle, params, id){
+    return JSON.stringify({
+        "method": method,
+        "handle": handle,
+        "params": params,
+        "jsonrpc": "2.0",
+        "id": id
+    })
+  }
   
   module.exports = {
-    generateUUID
+    generateUUID,
+    buildMessage
   }
   

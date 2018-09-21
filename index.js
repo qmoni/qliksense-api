@@ -50,26 +50,45 @@ QlikConnection.prototype.getQsr = async function (path) {
     return res
 }
 
-QlikConnection.prototype.getGlobal = async function (method, params) {
+QlikConnection.prototype.engine = async function (method, params) {
+    if (!params) params = []
     let ws = await socket.creatSocket(this.options)
     return new Promise((resolve, reject)=>{
         ws.onopen = async function (event) {
-            var msg = {
-                "method": method,
-                "handle": -1,
-                "params": params,
-                "jsonrpc": "2.0",
-                "id": 2
-            }
-            ws.send(JSON.stringify(msg));
-           
+            let msg = helpers.buildMessage(method, -1, params, 2)
+            ws.send(msg);
             ws.onmessage = function (event) {
                 let parsedAwnser = JSON.parse(event.data)
+                if(parsedAwnser.error) resolve(parsedAwnser.error)
                 if(parsedAwnser.method != 'OnConnected'){
                     resolve(parsedAwnser.result)
                     ws.close()
                 }
             
+            }
+        }
+    })
+}
+
+QlikConnection.prototype.OpenDoc = async function (docId, method, params) {
+    if (!params) params = []
+    if (!method || !docId) throw new Error('No method or docId declared')
+    let ws = await socket.creatSocket(this.options)
+    return new Promise((resolve, reject)=>{
+        ws.onopen = async function (event) {
+            let msg = helpers.buildMessage('OpenDoc', -1, [docId], 2)
+            ws.send(msg);
+            ws.onmessage = function (event) {
+                let parsedAwnser = JSON.parse(event.data)
+                if(parsedAwnser.method != 'OnConnected'){
+                    let msg = helpers.buildMessage(method, 1, params, 5)
+                    ws.send(msg);
+                    ws.onmessage = function (event) {
+                        let parsedAwnser = JSON.parse(event.data)
+                        resolve(parsedAwnser)
+                        ws.close()
+                    }      
+                }
             }
         }
     })
