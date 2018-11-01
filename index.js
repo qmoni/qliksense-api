@@ -6,6 +6,7 @@ const socket = require('./libs/socketConnection');
 const https = require('https');
 const path = require('path');
 const helpers = require('./libs/helpers')
+const querystring = require('querystring');
 
 function QlikConnection (options) {
  this.options = options
@@ -37,6 +38,23 @@ QlikConnection.prototype.getHealthCheck = async function () {
     return res
 }
 
+QlikConnection.prototype.getReloadTaskToken = async function (id, fileId) {
+    if(!id || !fileId) throw new Error('No taskId or file Reference Id declared')
+    let path = `ReloadTask/${id}/scriptlog?fileReferenceId=${fileId}`
+    let reqOptions = requestOptions.getOptions('reloadTask', this.options)
+    reqOptions.path = reqOptions.path.replace('##path##', path)
+    let res = await requestGetDispatcher(reqOptions)
+    return res
+}
+
+QlikConnection.prototype.getTaskLog = async function (taskId) {
+    if(!taskId) throw new Error('No taskId or file Reference Id declared')
+    let task = await this.getQsr(`ReloadTask/${taskId}`)
+    let token = await this.getReloadTaskToken(task.id, task.operational.lastExecutionResult.fileReferenceID)
+    let log =   await  this.getExeutionLog(token.value, task.name)
+    return log
+}
+
 QlikConnection.prototype.getExecutionResult = async function () {
     let reqOptions = requestOptions.getOptions('executionresult', this.options)
     let res = await requestGetDispatcher(reqOptions)
@@ -44,6 +62,14 @@ QlikConnection.prototype.getExecutionResult = async function () {
 }
 
 QlikConnection.prototype.getQsr = async function (path) {
+    let reqOptions = requestOptions.getOptions('qrs', this.options)
+    reqOptions.path = reqOptions.path.replace('##path##', path)
+    let res = await requestGetDispatcher(reqOptions)
+    return res
+}
+
+QlikConnection.prototype.getExeutionLog = async function (referenceId, taskName) {
+    let path = `download/reloadtask/${referenceId}/${querystring.escape(taskName)}.log`
     let reqOptions = requestOptions.getOptions('qrs', this.options)
     reqOptions.path = reqOptions.path.replace('##path##', path)
     let res = await requestGetDispatcher(reqOptions)
@@ -124,7 +150,11 @@ async function requestGetDispatcher(reqOptions){
                 body += chunk;
             });
             res.on('end', function () {
-                resolve(JSON.parse(body.toString()))
+                try{
+                    resolve(JSON.parse(body.toString()))
+                }catch(e){
+                    resolve(body.toString())
+                }
               });
             }).on('error', function(e) {
                reject(e)

@@ -45,6 +45,11 @@ const pathDef = {
         method: 'DELETE',
         port: 4243,
         path: `/qps/session/##path##?xrfkey=${xrfkey}`
+    },
+    reloadTask: {
+        method: 'GET',
+        port: 4242,
+        path: `/qrs/##path##&xrfkey=${xrfkey}`
     }
 }
 

@@ -57,6 +57,9 @@ console.log(res)
 * qlik.getApps()
 * qlik.getHealthCheck()
 * qlik.getExecutionResult()
+* qlik.getTaskLog(taskId) // return the last execution log
+* qlik.getReloadTaskToken(taskId, fileReferenceID) //return the execution reload task token
+* qlik.getExeutionLog(reloadTaskToken, taskName) // return the execution log
 * ... More to come
 
 ### Get Generic Path
@@ -155,7 +158,7 @@ let res = await qlik.engine(method)
 console.log(res)
 ```
 
-## App Class
+### App Class
 All the methods available can be found [here](https://help.qlik.com/en-US/sense-developer/November2017/Subsystems/EngineAPI/Content/Classes/AppClass/App-class-AbortModal-method.htm)
 
 ```
@@ -178,7 +181,7 @@ console.log(res)
 ```
 
 
-## Authors
+### Authors
 
 * [**Rodolfo Viola**](https://github.com/rodolfoviolac) - *Initial work*
 
