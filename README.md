@@ -60,9 +60,10 @@ console.log(res)
 * qlik.getTaskLog(taskId) // return the last execution log
 * qlik.getReloadTaskToken(taskId, fileReferenceID) //return the execution reload task token
 * qlik.getExeutionLog(reloadTaskToken, taskName) // return the execution log
+* qlik.doReloadTask('taskName') // reload task by name 
 * ... More to come
 
-### Get Generic Path
+### Get QSR Generic Path
 
 You can see the full list of QSR endpoints path [here](https://help.qlik.com/en-US/sense-developer/June2018/apis/repositoryserviceapi/index.html)
 
@@ -78,6 +79,14 @@ or Async/Await :
 const path = 'repositoryservice/full'
 let res = await qlik.getQsr(path)
 console.log(res)
+```
+### Post QSR Generic Path
+
+```
+const path = 'task/start/synchronous?name=test'
+ qlik.postQsr('path').then((res)=>{
+     console.log(res)
+ })
 ```
 
 ## QPS

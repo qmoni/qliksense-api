@@ -1,5 +1,5 @@
 'use strict'
-
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 const unifyOptions = require('./libs/createClient');
 const requestOptions = require('./libs/requestOptions');
 const socket = require('./libs/socketConnection');
@@ -38,6 +38,14 @@ QlikConnection.prototype.getHealthCheck = async function () {
     return res
 }
 
+QlikConnection.prototype.doReloadTask = async function (taskName) {
+    if (!taskName) throw new Error('No taskName or file Reference Id declared')
+    let reqOptions = requestOptions.getOptions('doReloadTask', this.options)
+    reqOptions.path = reqOptions.path.replace('##path##', encodeURIComponent(taskName))
+    let res = await requestGetDispatcher(reqOptions)
+    return res
+}
+
 QlikConnection.prototype.getReloadTaskToken = async function (id, fileId) {
     if(!id || !fileId) throw new Error('No taskId or file Reference Id declared')
     let path = `ReloadTask/${id}/scriptlog?fileReferenceId=${fileId}`
@@ -63,6 +71,13 @@ QlikConnection.prototype.getExecutionResult = async function () {
 
 QlikConnection.prototype.getQsr = async function (path) {
     let reqOptions = requestOptions.getOptions('qrs', this.options)
+    reqOptions.path = reqOptions.path.replace('##path##', path)
+    let res = await requestGetDispatcher(reqOptions)
+    return res
+}
+
+QlikConnection.prototype.postQsr = async function (path) {
+    let reqOptions = requestOptions.getOptions('postQrs', this.options)
     reqOptions.path = reqOptions.path.replace('##path##', path)
     let res = await requestGetDispatcher(reqOptions)
     return res

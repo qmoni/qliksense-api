@@ -1,6 +1,6 @@
 {
   "name": "qliksense-api",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Best Wrapper For Qlik Sense API, This package is designed to be the simplest way possible to connect to Qlik Sense.",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,9 @@
     "qliksense api",
     "sense devops",
     "connecting to qliksense",
-    "qlik sense qsr"
+    "qlik sense qsr",
+    "qlik sense engine",
+    "qlik sense login"
   ],
   "author": "QMoni",
   "license": "MIT",

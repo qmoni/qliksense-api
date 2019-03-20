@@ -31,6 +31,11 @@ const pathDef = {
         port: 4242,
         path: `/qrs/##path##?xrfkey=${xrfkey}`
     },
+    postQrs: {
+        method: 'POST',
+        port: 4242,
+        path: `/qrs/##path##&xrfkey=${xrfkey}`
+    },
     createSession: {
         method: 'POST',
         port: 4243,
@@ -50,6 +55,11 @@ const pathDef = {
         method: 'GET',
         port: 4242,
         path: `/qrs/##path##&xrfkey=${xrfkey}`
+    },
+    doReloadTask: {
+        method: 'POST',
+        port: 4242,
+        path: `/qrs/task/start/synchronous?name=##path##&xrfkey=${xrfkey}`
     }
 }
 
