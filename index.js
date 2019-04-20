@@ -5,6 +5,7 @@ const requestOptions = require('./libs/requestOptions');
 const socket = require('./libs/socketConnection');
 const https = require('https');
 const path = require('path');
+const fs = require('fs');
 const helpers = require('./libs/helpers')
 const querystring = require('querystring');
 
@@ -142,6 +143,34 @@ QlikConnection.prototype.generateSession = async function (userdirectory, userNa
     return res
 }
 
+QlikConnection.prototype.uploadApp= async function (name, filePath) {
+    let reqOptions = requestOptions.getOptions('uploadApp', this.options)
+    reqOptions.path = reqOptions.path.replace('##path##', `name=${name}&keepdata=true&excludeConnections=false`)
+    let res = await requestPostApp(reqOptions, filePath)
+    return res
+}
+
+QlikConnection.prototype.replaceApp= async function (id,appid) {
+    let reqOptions = requestOptions.getOptions('replaceApp', this.options)
+    reqOptions.path = reqOptions.path.replace('##path##', `${id}/replace?app=${appid}`)
+    let res = await requestPostDispatcher(reqOptions, {})
+    return res
+}
+
+QlikConnection.prototype.publishApp= async function (id,streamId, name) {
+    let reqOptions = requestOptions.getOptions('replaceApp', this.options)
+    reqOptions.path = reqOptions.path.replace('##path##', `${id}/publish?stream=${streamId}&name=${name}`)
+    let res = await requestPostDispatcher(reqOptions, {})
+    return res
+}
+
+QlikConnection.prototype.deleteApp= async function (id) {
+    let reqOptions = requestOptions.getOptions('deleteApp', this.options)
+    reqOptions.path = reqOptions.path.replace('##path##', `${id}`)
+    let res = await requestPostDispatcher(reqOptions, {})
+    return res
+}
+
 QlikConnection.prototype.getSession = async function (sessionId) {
     let reqOptions = requestOptions.getOptions('getSession', this.options)
     reqOptions.path = reqOptions.path.replace('##path##', sessionId)
@@ -186,13 +215,40 @@ async function requestPostDispatcher(reqOptions, bodyOptions){
             body += chunk;
         });
         sessionres.on('end', function () {
-            resolve(JSON.parse(body.toString()))
+            try{
+              resolve(JSON.parse(body.toString())) 
+            } catch(e){
+                resolve(body.toString()) 
+            }
           });
         }).on('error', function(e) {
            reject(e)
       });
       let jsonrequest = JSON.stringify(bodyOptions);
       sessionreq.write(jsonrequest);
+      sessionreq.end();
+  
+      sessionreq.on('error', function (e) {
+        reject('Error' + e);
+      });
+    })
+}  
+
+async function requestPostApp(reqOptions, bodyOptions){
+    reqOptions.headers = {...reqOptions.headers, 'Content-Type': 'application/vnd.qlik.sense.app'}
+    return new Promise((resolve, reject) => {
+      let sessionreq = https.request(reqOptions, async function (sessionres) {
+        let body = '';
+        sessionres.on("data", function(chunk) {
+            body += chunk;
+        });
+        sessionres.on('end', function () {
+            resolve(JSON.parse(body.toString()))
+          });
+        }).on('error', function(e) {
+           reject(e)
+      });
+      sessionreq.write(fs.readFileSync(bodyOptions));
       sessionreq.end();
   
       sessionreq.on('error', function (e) {

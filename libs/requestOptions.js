@@ -36,6 +36,21 @@ const pathDef = {
         port: 4242,
         path: `/qrs/##path##&xrfkey=${xrfkey}`
     },
+    uploadApp: {
+        method: 'POST',
+        port: 4242,
+        path: `/qrs/app/upload?##path##&xrfkey=${xrfkey}`
+    },
+    replaceApp: {
+        method: 'PUT',
+        port: 4242,
+        path: `/qrs/app/##path##&xrfkey=${xrfkey}`
+    },
+    deleteApp: {
+        method: 'DELETE',
+        port: 4242,
+        path: `/qrs/app/##path##?xrfkey=${xrfkey}`
+    },
     createSession: {
         method: 'POST',
         port: 4243,

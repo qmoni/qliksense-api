@@ -63,6 +63,12 @@ console.log(res)
 * qlik.doReloadTask('taskName') // reload task by name 
 * ... More to come
 
+### Post Functions:
+* qlik.uploadApp(name, filePath) // return the new uploaded app
+* qlik.replaceApp(id,appid) // Replace an app, identified by {appid}, with the app identified by {id}.
+* qlik.publishApp(id,streamId, name) // Publish an existing app, identified by {id}, to the stream identified by {streamid}. Optionally, provide a {name} for the app.
+* qlik.deleteApp(id) // Delete the app by id
+
 ### Get QSR Generic Path
 
 You can see the full list of QSR endpoints path [here](https://help.qlik.com/en-US/sense-developer/June2018/apis/repositoryserviceapi/index.html)

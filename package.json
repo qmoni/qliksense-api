@@ -1,6 +1,6 @@
 {
   "name": "qliksense-api",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Best Wrapper For Qlik Sense API, This package is designed to be the simplest way possible to connect to Qlik Sense.",
   "main": "index.js",
   "scripts": {
