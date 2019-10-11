@@ -90,7 +90,7 @@ console.log(res)
 
 ```
 const path = 'task/start/synchronous?name=test'
- qlik.postQsr('path').then((res)=>{
+ qlik.postQsr(path).then((res)=>{
      console.log(res)
  })
 ```
