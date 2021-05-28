@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/qmoni/qliksense-api#readme",
   "dependencies": {
-    "ws": "^6.0.0"
+    "ws": "^7.4.5"
   }
 }
